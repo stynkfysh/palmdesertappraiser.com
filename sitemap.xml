@@ -17,4 +17,5 @@
   <url><loc>https://www.palmdesertappraiser.com/areas/coachella.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.palmdesertappraiser.com/areas/thousand-palms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.palmdesertappraiser.com/areas/bermuda-dunes.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.palmdesertappraiser.com/llms.txt</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
 </urlset>
