@@ -11,9 +11,16 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  // CORS headers
+  // CORS headers — allow Pages preview domains and production
+  const origin = request.headers.get('Origin') || '';
+  const allowedOrigin =
+    origin.endsWith('.pages.dev') ||
+    origin.endsWith('palmdesertappraiser.com')
+      ? origin
+      : 'https://www.palmdesertappraiser.com';
+
   const headers = {
-    'Access-Control-Allow-Origin': 'https://www.palmdesertappraiser.com',
+    'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json',
@@ -46,7 +53,7 @@ export async function onRequestPost(context) {
     `;
 
     const toEmail = env.TO_EMAIL || 'contact@brianward.com';
-    const fromEmail = env.FROM_EMAIL || 'Palm Desert Appraiser <noreply@palmdesertappraiser.com>';
+    const fromEmail = env.FROM_EMAIL || 'Palm Desert Appraiser <contact@brianward.com>';
 
     // Send via Resend
     const resendRes = await fetch('https://api.resend.com/emails', {
@@ -87,10 +94,17 @@ export async function onRequestPost(context) {
 }
 
 // Handle CORS preflight
-export async function onRequestOptions() {
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  const allowedOrigin =
+    origin.endsWith('.pages.dev') ||
+    origin.endsWith('palmdesertappraiser.com')
+      ? origin
+      : 'https://www.palmdesertappraiser.com';
+
   return new Response(null, {
     headers: {
-      'Access-Control-Allow-Origin': 'https://www.palmdesertappraiser.com',
+      'Access-Control-Allow-Origin': allowedOrigin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     },
