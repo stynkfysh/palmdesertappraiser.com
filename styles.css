@@ -1,0 +1,511 @@
+/* ============================================================
+   Palm Desert Appraiser — Main Stylesheet
+   Modern, professional design with desert-inspired palette
+   ============================================================ */
+
+/* --- CSS Custom Properties --- */
+:root {
+  --color-primary: #1a5276;
+  --color-primary-dark: #0e3a56;
+  --color-primary-light: #2980b9;
+  --color-accent: #c17f24;
+  --color-accent-light: #d4973a;
+  --color-sand: #f5f0e8;
+  --color-sand-dark: #e8dfd0;
+  --color-text: #2c3e50;
+  --color-text-light: #5d6d7e;
+  --color-white: #ffffff;
+  --color-bg: #fafaf8;
+  --color-border: #ddd;
+  --color-success: #27ae60;
+  --color-error: #c0392b;
+  --font-heading: 'Georgia', 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --max-width: 1140px;
+  --header-height: 72px;
+  --transition: 0.25s ease;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--color-primary-light); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--color-accent); }
+ul, ol { list-style: none; }
+
+/* --- Utility --- */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.text-center { text-align: center; }
+
+/* --- Header --- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.site-logo {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+.site-logo span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--color-text-light); font-family: var(--font-body); letter-spacing: 0.02em; }
+
+/* --- Navigation --- */
+.nav-toggle { display: none; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--color-primary); padding: 4px 8px; }
+.main-nav ul { display: flex; gap: 4px; }
+.main-nav a {
+  display: block;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+  border-radius: 6px;
+  transition: background var(--transition), color var(--transition);
+}
+.main-nav a:hover, .main-nav a.active { background: var(--color-sand); color: var(--color-primary); }
+
+/* --- Hero --- */
+.hero {
+  position: relative;
+  padding: 80px 0 72px;
+  background: linear-gradient(135deg, rgba(14,58,86,0.82) 0%, rgba(26,82,118,0.78) 60%, rgba(41,128,185,0.72) 100%), url('images/hero-palm-desert.jpg') center/cover no-repeat;
+  color: var(--color-white);
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, var(--color-bg), transparent);
+}
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  max-width: 720px;
+}
+.hero p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  max-width: 640px;
+  margin-bottom: 28px;
+  opacity: 0.92;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background var(--transition), transform var(--transition);
+}
+.hero-cta:hover { background: var(--color-accent-light); color: var(--color-white); transform: translateY(-1px); }
+
+/* --- Page Hero (inner pages) --- */
+.page-hero {
+  padding: 52px 0 44px;
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  color: var(--color-white);
+}
+.page-hero h1 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.page-hero .breadcrumb { font-size: 0.85rem; opacity: 0.8; }
+.page-hero .breadcrumb a { color: rgba(255,255,255,0.85); }
+.page-hero .breadcrumb a:hover { color: var(--color-white); }
+
+/* --- Stats Bar --- */
+.stats-bar {
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  padding: 32px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.stat-item strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+.stat-item span { font-size: 0.9rem; color: var(--color-text-light); }
+
+/* --- Section --- */
+.section { padding: 64px 0; }
+.section--sand { background: var(--color-sand); }
+.section--white { background: var(--color-white); }
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 16px;
+}
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--color-text-light);
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+.section-subtitle.centered { margin-left: auto; margin-right: auto; }
+
+/* --- Service Cards --- */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+.service-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 32px 28px;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.service-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.service-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 12px;
+}
+.service-card p { font-size: 0.95rem; color: var(--color-text-light); }
+.service-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--color-sand);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+}
+
+/* --- Why Choose / Value Props --- */
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+.value-item { padding: 24px; }
+.value-item h3 { font-size: 1.1rem; color: var(--color-primary-dark); margin-bottom: 8px; font-weight: 600; }
+.value-item p { font-size: 0.95rem; color: var(--color-text-light); }
+
+/* --- City Grid (service area page) --- */
+.city-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.city-card {
+  display: block;
+  padding: 20px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--color-text);
+  transition: all var(--transition);
+}
+.city-card:hover { border-color: var(--color-primary-light); color: var(--color-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+/* --- Pricing Table --- */
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.pricing-table th {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 14px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.pricing-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+}
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table tr:nth-child(even) td { background: var(--color-sand); }
+.pricing-table .price { font-weight: 700; color: var(--color-primary); }
+
+/* --- FAQ Accordion --- */
+.faq-list { max-width: 800px; margin: 0 auto; }
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--color-white);
+}
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: background var(--transition);
+}
+.faq-question:hover { background: var(--color-sand); }
+.faq-question::after { content: '+'; font-size: 1.3rem; color: var(--color-primary-light); transition: transform var(--transition); flex-shrink: 0; margin-left: 16px; }
+.faq-item.open .faq-question::after { content: '−'; }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+.faq-item.open .faq-answer { max-height: 600px; }
+.faq-answer-inner { padding: 0 24px 20px; font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; }
+
+/* --- Reviews --- */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+.review-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 28px;
+}
+.review-stars { color: var(--color-accent); font-size: 1.1rem; margin-bottom: 12px; letter-spacing: 2px; }
+.review-text { font-size: 0.95rem; color: var(--color-text-light); margin-bottom: 16px; font-style: italic; line-height: 1.7; }
+.review-author { font-weight: 600; font-size: 0.9rem; color: var(--color-text); }
+.review-context { font-size: 0.8rem; color: var(--color-text-light); }
+
+/* --- Contact Form --- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  color: var(--color-text);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  background: var(--color-white);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(41,128,185,0.15);
+}
+.form-group textarea { resize: vertical; min-height: 120px; }
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.btn-submit:hover { background: var(--color-primary-dark); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.form-status {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none;
+  font-size: 0.95rem;
+}
+.form-status.success { background: #eafaf1; color: var(--color-success); border: 1px solid #a9dfbf; }
+.form-status.error { background: #fdedec; color: var(--color-error); border: 1px solid #f5b7b1; }
+
+/* --- Contact Info Sidebar --- */
+.contact-info-block { margin-bottom: 28px; }
+.contact-info-block h3 { font-size: 1.05rem; color: var(--color-primary-dark); margin-bottom: 8px; }
+.contact-info-block p { font-size: 0.95rem; color: var(--color-text-light); }
+.contact-info-block a { font-weight: 500; }
+
+/* --- CTA Banner --- */
+.cta-banner {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: var(--color-white);
+  padding: 56px 0;
+  text-align: center;
+}
+.cta-banner h2 {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+.cta-banner p { font-size: 1.05rem; opacity: 0.9; margin-bottom: 24px; }
+.cta-banner .hero-cta { font-size: 1rem; }
+
+/* --- Footer --- */
+.site-footer {
+  background: #1a1f2e;
+  color: rgba(255,255,255,0.7);
+  padding: 48px 0 24px;
+  font-size: 0.9rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 32px;
+}
+.footer-brand { font-family: var(--font-heading); font-size: 1.15rem; color: var(--color-white); margin-bottom: 12px; }
+.site-footer p { margin-bottom: 8px; line-height: 1.6; }
+.site-footer h4 { color: var(--color-white); font-size: 0.95rem; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.04em; }
+.site-footer ul li { margin-bottom: 8px; }
+.site-footer a { color: rgba(255,255,255,0.7); }
+.site-footer a:hover { color: var(--color-accent-light); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 20px;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* --- Area Neighborhood Image --- */
+.area-photo {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  margin: 24px 0;
+}
+
+/* --- Area Page Content --- */
+.area-content { max-width: 800px; }
+.area-content h2 { font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-primary-dark); margin: 32px 0 12px; }
+.area-content p { margin-bottom: 16px; }
+.area-content ul { margin: 0 0 20px 20px; }
+.area-content ul li { list-style: disc; margin-bottom: 6px; font-size: 0.95rem; color: var(--color-text-light); }
+.area-services-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; margin: 16px 0 24px; }
+.area-services-list li { list-style: none; padding-left: 20px; position: relative; font-size: 0.95rem; }
+.area-services-list li::before { content: '✓'; position: absolute; left: 0; color: var(--color-success); font-weight: 700; }
+
+/* --- Market Data Section (for future automated updates) --- */
+/* id="market-data" marks this section for programmatic content updates */
+.market-snapshot {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.market-stat {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.market-stat .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-light); margin-bottom: 4px; }
+.market-stat .value { font-family: var(--font-heading); font-size: 1.6rem; color: var(--color-primary); font-weight: 700; }
+.market-stat .change { font-size: 0.8rem; margin-top: 4px; }
+.market-stat .change.up { color: var(--color-success); }
+.market-stat .change.down { color: var(--color-error); }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  .hero h1 { font-size: 2rem; }
+  .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 12px 0;
+  }
+  .main-nav.open { display: block; }
+  .main-nav ul { flex-direction: column; gap: 0; }
+  .main-nav a { padding: 12px 24px; border-radius: 0; }
+  .hero { padding: 56px 0 48px; }
+  .hero h1 { font-size: 1.75rem; }
+  .section { padding: 48px 0; }
+  .area-services-list { grid-template-columns: 1fr; }
+}

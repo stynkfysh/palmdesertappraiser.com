@@ -1,0 +1,8 @@
+# Redirect non-www to www
+# (Configure this in Cloudflare DNS/Page Rules as well)
+
+# Common old URL patterns to handle gracefully
+/home       /index.html  301
+/services   /appraisal-fees.html  301
+/fees       /appraisal-fees.html  301
+/areas      /service-area.html  301
