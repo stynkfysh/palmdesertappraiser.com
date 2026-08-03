@@ -75,8 +75,12 @@ function scoreSubmission(f) {
   }
 
   // --- Proof the submission came from a real page load ---
-  // Redundant once Turnstile has vouched for the visitor.
-  if (!f.tokenValid && f.turnstile !== 'passed') {
+  // Deliberately NOT stacked on top of a Turnstile failure. Both the token
+  // and the Turnstile widget depend on JavaScript, so a visitor with scripts
+  // blocked fails both at once. Charging for both would push an ordinary
+  // client over the drop threshold on a single underlying cause and lose a
+  // real lead. Counted only when Turnstile has not already spoken.
+  if (!f.tokenValid && f.turnstile !== 'passed' && f.turnstile !== 'failed') {
     add(40, 'no valid form token (posted directly to the API)');
   }
   if (f.dwellMs != null && f.dwellMs < 3000) add(40, 'submitted under 3s after page load');
