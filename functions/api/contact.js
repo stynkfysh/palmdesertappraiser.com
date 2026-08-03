@@ -86,8 +86,27 @@ export async function onRequestPost(context) {
       );
     }
 
-    // Confirmation to the submitter. Never fatal — the request already succeeded.
-    try {
+    // Confirmation to the submitter — CLEAN submissions only.
+    //
+    // Form spam carries harvested third-party addresses, so auto-replying to
+    // an unverified submission means mailing a stranger from our domain and
+    // spending a second Resend credit on the spammer's behalf.
+    const digits = String(phone || '').replace(/\D/g, '');
+    const domain = String(email).split('@')[1]?.toLowerCase() || '';
+    const looksLikeSpam =
+      body.website ||                                            // honeypot
+      (digits.length === 11 && digits[0] !== '1') ||              // non-US pattern
+      digits.length > 11 ||
+      ['bk.ru', 'mail.ru', 'list.ru', 'inbox.ru', 'rambler.ru', 'yandex.ru']
+        .includes(domain) ||
+      /[Ѐ-ӿ]/.test(`${name} ${message} ${property_address}`) ||    // Cyrillic
+      /https?:\/\/|\[url/i.test(String(message || ''));           // link in message
+
+    if (looksLikeSpam) {
+      console.log(JSON.stringify({ autoReplySuppressed: true, name, email }));
+    }
+
+    if (!looksLikeSpam) try {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
