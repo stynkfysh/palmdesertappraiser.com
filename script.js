@@ -34,6 +34,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Contact form submission
   var form = document.getElementById('contact-form');
+
+  // Signed form token: proves a real browser loaded the page. Bots that POST
+  // straight at /api/contact never fetch one. Non-blocking on failure -- the
+  // submission still goes through, it is just scored more cautiously.
+  if (form) {
+    fetch('/api/form-token', { credentials: 'omit' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var el = document.getElementById('form-token');
+        if (el && d && d.token) el.value = d.token;
+      })
+      .catch(function () { /* non-blocking */ });
+  }
+
   if (form) {
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
