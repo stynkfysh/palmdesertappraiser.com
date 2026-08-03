@@ -154,7 +154,10 @@
             </div>
 
             <button type="submit" class="btn-submit">Send Message</button>
-          </form>
+          
+      <!-- Cloudflare Turnstile: free bot check, normally invisible to real visitors -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAEFgs51oZ-49EPbd" data-theme="light" data-appearance="interaction-only" style="margin:14px 0;"></div>
+    </form>
         </div>
 
         <!-- RIGHT COLUMN: Contact Info -->
@@ -232,5 +235,6 @@
   </footer>
 
   <script src="script.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </body>
 </html>

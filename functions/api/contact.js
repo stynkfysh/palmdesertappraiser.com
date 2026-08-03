@@ -66,8 +66,19 @@ function scoreSubmission(f) {
   // --- Hard signal: only an automated client fills a hidden field ---
   if (f.honeypot) add(100, 'hidden honeypot field was filled');
 
+  // --- Cloudflare Turnstile (skipped entirely when not configured) ---
+  if (f.turnstile === 'failed') add(60, 'failed Cloudflare Turnstile');
+  if (f.turnstile === 'passed') {
+    // Strong proof of a real browser and a real person.
+    score -= 40;
+    reasons.push('passed Cloudflare Turnstile (-40)');
+  }
+
   // --- Proof the submission came from a real page load ---
-  if (!f.tokenValid) add(40, 'no valid form token (posted directly to the API)');
+  // Redundant once Turnstile has vouched for the visitor.
+  if (!f.tokenValid && f.turnstile !== 'passed') {
+    add(40, 'no valid form token (posted directly to the API)');
+  }
   if (f.dwellMs != null && f.dwellMs < 3000) add(40, 'submitted under 3s after page load');
 
   // --- Non-Latin script in a California appraisal form ---
@@ -99,11 +110,58 @@ function scoreSubmission(f) {
     add(20, 'appraisal purpose is not one of the form options');
   }
 
+  if (score < 0) score = 0;
+
   let verdict = CLEAN;
   if (score >= DROP_AT) verdict = SPAM;
   else if (score >= FLAG_AT) verdict = SUSPECT;
 
   return { score, verdict, reasons };
+}
+
+// --- Cloudflare Turnstile -------------------------------------------------
+// Free, unlimited. Managed mode: real visitors normally see a brief self-
+// resolving box and never click anything.
+//
+// Two deliberate design choices:
+//
+// 1. DORMANT UNTIL CONFIGURED. With no TURNSTILE_SECRET_KEY set, this is a
+//    no-op and scoring behaves exactly as before. Deploying the code cannot
+//    break a form before the keys exist.
+//
+// 2. FAILURE IS SCORED, NOT FATAL. A failed or missing Turnstile token adds
+//    weight rather than hard-rejecting, so a real client on a flaky network or
+//    with a blocked third-party script still reaches Brian, flagged. Losing a
+//    genuine estate lead costs far more than glancing at a flagged one.
+//
+// Two secrets are supported because the free plan caps a widget at 10
+// hostnames and the brianward.com endpoint serves more than that across the
+// market-area sites.
+
+async function verifyTurnstile(token, ip, env) {
+  const secrets = [env.TURNSTILE_SECRET_KEY, env.TURNSTILE_SECRET_KEY_2].filter(Boolean);
+  if (!secrets.length) return 'unconfigured';
+  if (!token) return 'failed';
+
+  for (const secret of secrets) {
+    try {
+      const body = new FormData();
+      body.append('secret', secret);
+      body.append('response', token);
+      if (ip) body.append('remoteip', ip);
+      const r = await fetch(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        { method: 'POST', body }
+      );
+      const d = await r.json();
+      if (d.success) return 'passed';
+    } catch (e) {
+      // Network trouble reaching Cloudflare must not decide the outcome.
+      console.error('Turnstile verify error:', e.message);
+      return 'unconfigured';
+    }
+  }
+  return 'failed';
 }
 
 // --- Form token: proves a real browser loaded the page before submitting ----
@@ -174,13 +232,18 @@ export async function onRequestPost(context) {
 
     const SITE_NAME = 'palmdesertappraiser.com';
 
+    const turnstile = await verifyTurnstile(
+      body['cf-turnstile-response'] || body.cf_turnstile_response,
+      request.headers.get('CF-Connecting-IP'),
+      env
+    );
     const { valid: tokenValid, dwellMs } = await verifyToken(body._token, env);
     const { score: spamScore, verdict, reasons: spamReasons } = scoreSubmission({
       name, email, phone,
       street: property_address, message,
       purpose: appraisal_type,
       honeypot: body.website || body.company_url,
-      tokenValid, dwellMs,
+      tokenValid, dwellMs, turnstile,
     });
 
     // Drop outright: no notification, no auto-reply, no Resend credit spent.
